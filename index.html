@@ -13,9 +13,9 @@
     <section class="page-header">
       <h1 class="project-name">Android JSON-RPC Client</h1>
       <h2 class="project-tagline">How to create a JSON-RPC client for Android that connect with RPC Server </h2>
-      <a href="https://github.com/Lifka/Android-RPC" class="btn">View on GitHub</a>
-      <a href="https://github.com/Lifka/Android-RPC/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/Lifka/Android-RPC/tarball/master" class="btn">Download .tar.gz</a>
+      <a href="https://github.com/Lifka/Android-JSON-RPC-Client" class="btn">View on GitHub</a>
+      <a href="https://github.com/Lifka/Android-JSON-RPC-Client/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Lifka/Android-JSON-RPC-Client/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
@@ -39,27 +39,9 @@ mediante el desarrollo de un pequeño ejemplo de cliente.</p>
 <h1>
 <a id="introducción" class="anchor" href="#introducci%C3%B3n" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introducción</h1>
 
-<p>RPC (Remote Procedure Call), en resumidas palabras, es una técnica de programación
-distribuida cuya finalidad principal es abstraer la comunicación entre dos equipos in-
-formáticos por medio de un middleware con la intención de ejecutar procedimientos
-remotos de otra máquina sin preocuparnos en cómo se establece la comunicación. Esta
-idea puede aplicarse sobre cualquier dispositivo, y para ello hay varios ejemplos de
-entornos RPC tales como Java-RMI, SOAP, CORBA, etc. [1,2]
-Actualmente no tiene mucho sentido utilizar esta tecnología en dispositivos Android ya
-que se está desarrollando muy rápidamente la arquitectura REST (concretamente
-RESTful) donde se desarrollan servicios web listos para su uso desde cualquier otro
-dispositivo, algo que resulta muy cómo para programar aplicaciones cliente de forma
-muy rápida. Para ello el dispositivo cliente tan solo tiene que conectarse a un servidor
-web que ofrezca dicho servicio para invocarlo y poder usar el resultado devuelto. Dicho
-resultado podrá estar en diferentes formatos, de los cuales destacamos XML y JSON
-[3].
-Si nuestro objetivo es ejecutar procedimientos de otra máquina en nuestro dispositivo
-Android, sin tener que depender de ningún servicio ofrecido en la web, tenemos dispo-
-nibles varias bibliotecas que nos ofrecen una forma de implementar RPC en Android
-de forma muy sencilla. Concretamente vamos a centrarnos en una de las bibliotecas
-open Source más conocidas en la actualidad en cuanto a llamadas a procedimientos
-remotos se refiere, denominada Android-rpc-json. Como su nombre indica trata de
-facilitarnos el uso de RPC en Android por medio del formateo de datos en JSON [10].</p>
+<p>RPC (Remote Procedure Call) podría resumirse como una técnica de programación distribuida cuya finalidad principal es abstraer la comunicación entre dos equipos informáticos, por medio de un middleware, con la intención de ejecutar procedimientos remotos de otra máquina, sin preocuparnos en cómo se establece la comunicación. Esta idea puede aplicarse sobre cualquier dispositivo, y para ello hay varios ejemplos de entornos RPC tales como Java-RMI, SOAP, CORBA, etc.[1,2]<br>
+En la actualidad existen formas más adecuadas para realizar esto en dispositivos Android, ya que está evolucionando muy rápidamente la arquitectura REST (concretamente RESTful) donde se desarrollan servicios web listos para su uso desde cualquier otro dispositivo. Para ello el dispositivo cliente tan solo tiene que conectarse a un servidor web que ofrezca dicho servicio para invocarlo y poder usar el resultado devuelto. Dicho resultado podrá estar en diferentes formatos, de los cuales destacamos XML y JSON [3].<br>
+Si nuestro objetivo es ejecutar procedimientos de otra máquina en nuestro dispositivo Android, sin tener que depender de ningún servicio ofrecido en la web, tenemos disponibles varias bibliotecas que nos ofrecen una forma de implementar RPC en Android de forma sencilla. Concretamente vamos a centrarnos en una de las bibliotecas open Source más conocidas en la actualidad en cuanto a llamadas a procedimientos remotos se refiere, denominada Android-rpc-json. Como su nombre indica trata de facilitarnos el uso de RPC en Android por medio del formateo de datos en JSON [10].</p>
 
 <h1>
 <a id="trabajos-relacionados" class="anchor" href="#trabajos-relacionados" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trabajos Relacionados</h1>
@@ -348,7 +330,7 @@ dos números en un servidor remoto. Para ello la aplicación solicita al usuario
 </ol>
 
       <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/Lifka/Android-RPC">Android JSON-RPC Client</a> is maintained by <a href="https://github.com/Lifka">Lifka</a>.</span>
+        <span class="site-footer-owner"><a href="https://github.com/Lifka/Android-JSON-RPC-Client">Android JSON-RPC Client</a> is maintained by <a href="https://github.com/Lifka">Lifka</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
