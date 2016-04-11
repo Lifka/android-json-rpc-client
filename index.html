@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Android-rpc by Lifka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Android-rpc</h1>
+      <h2 class="project-tagline">How to create a RPC client for Android that connect with RPC Linux Server </h2>
+      <a href="https://github.com/Lifka/Android-RPC" class="btn">View on GitHub</a>
+      <a href="https://github.com/Lifka/Android-RPC/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Lifka/Android-RPC/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="rpc-en-android-android-json-rpc" class="anchor" href="#rpc-en-android-android-json-rpc" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RPC en Android (android-json-rpc)</h1>
+
+<p>Gallardo Morales, Juan Carlos (<a href="mailto:jcgallardomorales@gmail.com">jcgallardomorales@gmail.com</a>)<br>
+Izquierdo Vera, Javier (<a href="mailto:javierizquierdovera@gmail.com">javierizquierdovera@gmail.com</a>)</p>
+
+<h1>
+<a id="abstract" class="anchor" href="#abstract" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Abstract</h1>
+
+<p>RPC permite conectar dispositivos, pudiendo realizar una conexión
+cliente servidor. En este texto se pretende usar esta tecnología para desarrollar un
+cliente en Android que permita a una aplicación móvil utilizar servicios RPC.
+Para este propósito se ha seleccionado y utilizado una biblioteca que sigue el
+formato JSON para la serialización de los datos. Se habla acerca de la biblioteca,
+de sus funcionalidades, de su instalación, y concluímos llevándolo a la práctica
+mediante el desarrollo de un pequeño ejemplo de cliente.</p>
+
+<h1>
+<a id="introducción" class="anchor" href="#introducci%C3%B3n" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introducción</h1>
+
+<p>RPC (Remote Procedure Call), en resumidas palabras, es una técnica de programación
+distribuida cuya finalidad principal es abstraer la comunicación entre dos equipos in-
+formáticos por medio de un middleware con la intención de ejecutar procedimientos
+remotos de otra máquina sin preocuparnos en cómo se establece la comunicación. Esta
+idea puede aplicarse sobre cualquier dispositivo, y para ello hay varios ejemplos de
+entornos RPC tales como Java-RMI, SOAP, CORBA, etc. [1,2]
+Actualmente no tiene mucho sentido utilizar esta tecnología en dispositivos Android ya
+que se está desarrollando muy rápidamente la arquitectura REST (concretamente
+RESTful) donde se desarrollan servicios web listos para su uso desde cualquier otro
+dispositivo, algo que resulta muy cómo para programar aplicaciones cliente de forma
+muy rápida. Para ello el dispositivo cliente tan solo tiene que conectarse a un servidor
+web que ofrezca dicho servicio para invocarlo y poder usar el resultado devuelto. Dicho
+resultado podrá estar en diferentes formatos, de los cuales destacamos XML y JSON
+[3].
+Si nuestro objetivo es ejecutar procedimientos de otra máquina en nuestro dispositivo
+Android, sin tener que depender de ningún servicio ofrecido en la web, tenemos dispo-
+nibles varias bibliotecas que nos ofrecen una forma de implementar RPC en Android
+de forma muy sencilla. Concretamente vamos a centrarnos en una de las bibliotecas
+open Source más conocidas en la actualidad en cuanto a llamadas a procedimientos
+remotos se refiere, denominada Android-rpc-json. Como su nombre indica trata de
+facilitarnos el uso de RPC en Android por medio del formateo de datos en JSON [10].</p>
+
+<h1>
+<a id="trabajos-relacionados" class="anchor" href="#trabajos-relacionados" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trabajos Relacionados</h1>
+
+<p>Actualmente existen muchas bibliotecas relacionadas con Android-rpc-json, entre
+las que destacamos las siguientes:</p>
+
+<ul>
+<li>XML-RPC: es un protocolo de llamadas a procedimientos remotos (RPC) que
+trabaja sobre internet devolviendo los resultados en formato XML. Fue el co-
+mienzo de lo que hoy en día es conocido como SOAP. Actualmente parece
+estar bastante abandonado debido a su gran simplicidad, y por esta razón mu-
+chos desarrolladores han optado por crear nuevas bibliotecas a partir de esta
+para intentar solucionar los problemas que presenta, como aXMLRPC [4,5].</li>
+<li>Apache XML-RPC: adaptación XML-RPC al lenguaje Java realizado por
+Apache Software Foundation. La web oficial fue editada por última vez en el
+año 2005, por lo que parece no estar en desarrollo actualmente. En dicha web
+existe una API muy extensa para su uso y podemos acceder directamente a su
+descarga de forma gratuita [6].</li>
+<li>Android-xmlrpc: se trata de otra adaptación de XML-RPC a dispositivos An-
+droid, caracterizada por ser muy ligera. Hay muy poca información sobre ella
+y muy pocos ejemplos prácticos sobre su utilización. Desde code.google.com
+podemos ver que su última actualización fue subida en el año 2010, y su último
+commit fue en 2012 por lo que deja muchas dudas sobre su actual desarrollo
+[9].</li>
+</ul>
+
+<h1>
+<a id="3-análisis" class="anchor" href="#3-an%C3%A1lisis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3 Análisis</h1>
+
+<h3>
+<a id="31-descripción" class="anchor" href="#31-descripci%C3%B3n" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.1 Descripción</h3>
+
+<p>Centraremos nuestra atención en la biblioteca “android-json-rpc” [10] creada y man-
+tenida por una comunidad de usuarios bajo licencia MIT [11]. Como ya hemos men-
+cionado en apartados anteriores, hay varias bibliotecas y proyectos que han pretendido
+dar soporte a este concepto, el motivo por el que hemos seleccionado esta biblioteca en
+concreto es porque ha sido mantenida hasta el año 2013. No es una fecha muy reciente
+pero sí de las más recientes, además de que es una biblioteca que tiene claro su objetivo
+y se centra en él, por lo que no es demasiado grande y no tiene mucho más de lo que
+necesitamos.<br>
+Esta biblioteca se centra exclusivamente en dar el soporte necesario para crear un
+cliente RPC en plataformas Android, proporcionando los métodos adecuados para crear
+el cliente con el host concreto, y para enviar y recibir datos del servidor, usando para
+ello el formato JSON, el cual se explicará más adelante. Todo ello se basa en JSON-
+RPC [7].</p>
+
+<h3>
+<a id="32-requerimientos-y-clases-ofrecidas" class="anchor" href="#32-requerimientos-y-clases-ofrecidas" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.2 Requerimientos y clases ofrecidas</h3>
+
+<p>No hay ningún requerimiento concreto para utilizar esta biblioteca, simplemente hay
+que incluirla en el proyecto Android e importarla para poder usar sus funciones. Lo único que tenemos que tener en cuenta es importar algunas utilidades de la biblioteca
+HTTP de apache que se requieren, lo cual no debería suponer un problema porque suele
+encontrarse en el entorno y es fácil de conseguir. Más tarde en el apartado de instalación se explicará cómo importar esta biblioteca.</p>
+
+<p>Android-json-rpc ofrece documentación en formato html de todas sus clases y métodos,
+algo de lo que carecían algunas de las bibliotecas encontradas en Internet. Ésta biblioteca se compone de 7 clases principales: JSONEntity, JSONRPCClient, JSONRPCEx-
+ception, JSONRPCHttpClient, JSONRPCParams, JSONRPCThreadedClient, y JSON-
+RPCThreadedHttpClient.</p>
+
+<p>Vamos a ceñirnos a lo necesario para crear y hacer funcionar un cliente RPC por medio
+de esta biblioteca sin tener en cuenta todas las funciones incluidas, debido a que toda la documentación ya se encuentra detallada y sería redundante centrarnos en ello. La clases clases que utilizaremos son: JSONRPCClient, JSONRPCException y JSON-
+RPCParams. </p>
+
+<p>JSONRPCClient es la clase más importante, es la que compone la estructura del
+cliente (aunque también podríamos haber utilizado la clase JSONRPCHttpClient en
+caso de realizarlo usando http). Contiene los métodos necesarios para registrar el host con el que se establece conexión (create), para establecer el timeout (setConnectionTimeout), consultarlo (getConnectionTimeout), establecer el timeout del socket (setSoTimeout), obtenerlo (getSoTimeout), etc.</p>
+
+<p>Además, también contiene los métodos que necesitaremos para realizar las peticiones
+al servidor, estos son los llamados métodos “call”. Hay un call distinto para diversos
+tipos de variables, callBoolean, callDouble, callInt, callString, callLong, callJSONA-
+rray, etc. Cada call devuelve el tipo de variable que se especifica en su sintaxis, y recibe el nombre del método (String) que se va a llamar en el servidor, y los parámetros que se requieren para ello, de modo que estos métodos realizan la petición al servidor y devuelven la respuesta en el tipo indicado. Con la excepción del propio método “call”, que devuelve un Object.</p>
+
+<p>JSONRPCException se ha utilizado para controlar la posible excepción en caso de
+que la llamada al servidor falle, y JSONRPCParams, que no es más que un enum, se ha
+utilizado para indicar la versión de JSON-RPC que utiliza el servidor, la cual es necesaria indicar al enlazar el host. En este caso se utilizará la versión 2 de JSON-RPC, que es la más reciente [7].</p>
+
+<p>Toda esta información puede encontrarse más detallada en la documentación de la bi-
+blioteca [10].</p>
+
+<h3>
+<a id="33-formato-de-salida" class="anchor" href="#33-formato-de-salida" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.3 Formato de salida</h3>
+
+<p>Los datos de salida están formateados en JSON, formato de texto ligero para inter-
+cambio de datos. Se trata de una alternativa mucho más eficiente que XML y es sopor-
+tada y apoyada directa o indirectamente por casi todos los lenguajes de programación
+modernos. Su estructura básica es la siguiente:</p>
+
+<ul>
+<li>Colección de pares nombre / valor, que puede estar representada por objetos,
+tablas hash, listas con claves, etc.</li>
+<li>Lista ordenada de valores, representada por matrices, vectores, arrays, etc.Su implementación, de forma resumida, es la siguiente:</li>
+<li>Objetos:<br>
+{string1: value1, string2: value2,...}</li>
+<li>Arrays:<br>
+[value1, value2,...]</li>
+</ul>
+
+<p>Donde value puede ser un objeto, array, booleano, número, string, null, etc.
+En nuestro caso nos interesa utilizarlo en Java, lo que cual se realizaría de la siguiente forma: </p>
+
+<ul>
+<li>Convertir objetos Java a JSON (serialización): podemos utilizar la librería Gson para facilitarnos el trabajo. Por ejemplo podríamos serializar de forma estándar de la siguiente forma:</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Empleado</span> emp <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Empleado</span>();
+<span class="pl-smi">Gson</span> gson <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Gson</span>();
+<span class="pl-smi">String</span> representacion <span class="pl-k">=</span> gson<span class="pl-k">.</span>toJson(emp);</pre></div>
+
+<ul>
+<li>Convertir JSON a objetos Java (deserialización): usando la misma librería (Gson)
+podemos convertir una cadena Json a objetos Java de forma muy sencilla, veamos
+un ejemplo de uso estándar:</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Gson</span> gson <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Gson</span>();
+<span class="pl-smi">Type</span> tipoEmp <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">TypeToken&lt;<span class="pl-smi">Empleado</span>&gt;</span>()<span class="pl-k">.</span>getType();
+<span class="pl-smi">Emp</span> <span class="pl-k">=</span> gson<span class="pl-k">.</span>fromJson(representación,tipoEmp);</pre></div>
+
+<p>Podemos ver más información de Json en [7] y más información de Gson en [8].</p>
+
+<h3>
+<a id="34-instalación" class="anchor" href="#34-instalaci%C3%B3n" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.4 Instalación</h3>
+
+<p>Como se ha mencionado anteriormente, la instalación es relativamente sencilla y se
+limita a descargar las bibliotecas e importarlas en el proyecto Android. En la web de la biblioteca android-json-rpc se habla de cómo importarla en eclipse [12], esto es debido a que no está actualizado, nosotros desaconsejamos el uso de eclipse para esta labor y a continuación explicaremos cómo importarla en Android Studio.</p>
+
+<p>Una vez tengamos Android Studio y el proyecto Android cargado (la explicación de
+cómo se realiza la instalación y la creación del proyecto escapa del objetivo de este
+texto), y hayamos descargado la biblioteca desde su web, nos situamos en la estruc-
+tura del proyecto (File → Project Structure...) y añadimos las dependencias requeridas
+mediante el botón “Add”. Otra alternativa es arrastrar las clases de java a la carpeta denuestro proyecto. Una vez realizado esto tendremos que especificar los “import” ne-
+cesarios en el código, indicando el paquete y la clase. Por ejemplo, en caso de haber-
+los importado en el paquete “RPC”, habría que indicar “import RPC.clase_concreta;”.
+El proceso para importar las clases requeridas de Apache HTTP sería análogo, la bi-
+blioteca la podemos encontrar en la web de Apache [13].</p>
+
+<h3>
+<a id="35-ejemplo-de-uso" class="anchor" href="#35-ejemplo-de-uso" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.5 Ejemplo de uso</h3>
+
+<p>Siguiendo el proceso de instalación mencionado, y utilizando las clases y métodos que
+se han explicado, se ha realizado un ejemplo sencillo de aplicación Android que suma
+dos números en un servidor remoto. Para ello la aplicación solicita al usuario iniciar el cliente, el cual se ha abstraído de la aplicación tratándose como un objeto, intentando reducir el acoplamiento entre ambos. Una vez iniciado el cliente, el usuario puede introducir dos números cualesquiera y pulsar el botón de sumar, este botón llama a un método del objeto cliente el cual llama al método “call” indicando los dos números a sumar, y el método que se encarga de sumar en el servidor, recibiendo así una respuesta y devolviéndoselo a la clase java que se encarga de controlar los eventos del layout, mostrándolo así como un resultado visible en la pantalla del dispositivo.</p>
+
+<p>Ejemplo de la interfaz de la aplicación:</p>
+
+<p><img src="http://i.imgur.com/FUCmTkr.png" alt="Imagen 1"> 
+<img src="http://i.imgur.com/lpESkaU.png" alt="Imagen 1"></p>
+
+<p>El código de la aplicación será el siguiente:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">com.red.lifka.rpc_android</span>;
+
+<span class="pl-k">import</span> <span class="pl-smi">android.support.v7.app.AppCompatActivity</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.os.Bundle</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.util.Log</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.view.View</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.widget.Button</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.widget.EditText</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.widget.TextView</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Main</span> <span class="pl-k">extends</span> <span class="pl-e">AppCompatActivity</span> {
+
+   <span class="pl-k">private</span> <span class="pl-smi">Button</span> start_client;
+   <span class="pl-k">private</span> <span class="pl-smi">EditText</span> val1;
+   <span class="pl-k">private</span> <span class="pl-smi">EditText</span> val2;
+   <span class="pl-k">private</span> <span class="pl-smi">TextView</span> result_value;
+   <span class="pl-k">private</span> <span class="pl-smi">Button</span> launch;
+
+   <span class="pl-k">private</span> <span class="pl-smi">Client</span> client <span class="pl-k">=</span> <span class="pl-c1">null</span>;
+   <span class="pl-k">private</span> <span class="pl-k">double</span> x;
+   <span class="pl-k">private</span> <span class="pl-k">double</span> y;
+   <span class="pl-k">private</span> <span class="pl-k">double</span> result <span class="pl-k">=</span> <span class="pl-c1">0.0</span>;
+   <span class="pl-k">private</span> <span class="pl-k">int</span> operation <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+
+   <span class="pl-k">private</span> <span class="pl-smi">String</span> host <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>localhost<span class="pl-pds">"</span></span>;
+
+
+   <span class="pl-k">@Override</span>
+   <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">onCreate</span>(<span class="pl-smi">Bundle</span> <span class="pl-v">savedInstanceState</span>) {
+       <span class="pl-v">super</span><span class="pl-k">.</span>onCreate(savedInstanceState);
+       setContentView(<span class="pl-smi">R</span><span class="pl-k">.</span>layout<span class="pl-k">.</span>activity_main);
+
+       <span class="pl-c">// Enlazar objetos del layout</span>
+       start_client <span class="pl-k">=</span> (<span class="pl-smi">Button</span>)findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>startclient);
+       val1 <span class="pl-k">=</span> (<span class="pl-smi">EditText</span>)findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>value1);
+       val2 <span class="pl-k">=</span> (<span class="pl-smi">EditText</span>)findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>value2);
+       result_value <span class="pl-k">=</span> (<span class="pl-smi">TextView</span>)findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>resultvalue);
+       launch <span class="pl-k">=</span> (<span class="pl-smi">Button</span>)findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>launch);
+       launch<span class="pl-k">.</span>setEnabled(<span class="pl-c1">false</span>);
+
+       <span class="pl-c">// Iniciar cliente</span>
+       start_client<span class="pl-k">.</span>setOnClickListener(<span class="pl-k">new</span> <span class="pl-smi">View</span>.<span class="pl-smi">OnClickListener</span>() {
+           <span class="pl-k">@Override</span>
+           <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClick</span>(<span class="pl-smi">View</span> <span class="pl-v">v</span>) {
+               <span class="pl-c">// Clase cliente, abstrae el uso del cliente que ofrece la biblioteca</span>
+               client <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Client</span>(host);
+
+               <span class="pl-c">// Ajustar layout</span>
+               start_client<span class="pl-k">.</span>setEnabled(<span class="pl-c1">false</span>);
+               launch<span class="pl-k">.</span>setEnabled(<span class="pl-c1">true</span>);
+           }
+       });
+
+       <span class="pl-c">// Request</span>
+       launch<span class="pl-k">.</span>setOnClickListener(<span class="pl-k">new</span> <span class="pl-smi">View</span>.<span class="pl-smi">OnClickListener</span>() {
+           <span class="pl-k">@Override</span>
+           <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClick</span>(<span class="pl-smi">View</span> <span class="pl-v">v</span>) {
+               <span class="pl-c">// Obtener los números a sumar</span>
+               x <span class="pl-k">=</span>  <span class="pl-k">new</span> <span class="pl-smi">Double</span>(val1<span class="pl-k">.</span>getText()<span class="pl-k">.</span>toString());
+               y <span class="pl-k">=</span>  <span class="pl-k">new</span> <span class="pl-smi">Double</span>(val2<span class="pl-k">.</span>getText()<span class="pl-k">.</span>toString());
+
+               <span class="pl-c">// Pedir a la clase cliente que lance la operación de sumar los dos números</span>
+               result <span class="pl-k">=</span> client<span class="pl-k">.</span>launch(x, y, operation);
+
+               <span class="pl-c">// Mostrar resultado en el layout</span>
+               result_value<span class="pl-k">.</span>setText(<span class="pl-smi">String</span><span class="pl-k">.</span>valueOf(result));
+           }
+       });
+
+   }
+}
+
+</pre></div>
+
+<p>El código cliente podemos verlo a continuación:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">com.red.lifka.rpc_android</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.util.Log</span>;
+<span class="pl-k">import</span> <span class="pl-smi">RPC.JSONRPCClient</span>;
+<span class="pl-k">import</span> <span class="pl-smi">RPC.JSONRPCException</span>;
+<span class="pl-k">import</span> <span class="pl-smi">RPC.JSONRPCParams</span>;
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Client</span> {
+  <span class="pl-k">private</span> <span class="pl-smi">JSONRPCClient</span> client;
+  <span class="pl-k">private</span> <span class="pl-smi">String</span> host;
+
+  <span class="pl-en">Client</span>(<span class="pl-smi">String</span> <span class="pl-v">host</span>){
+      <span class="pl-smi">Log</span><span class="pl-k">.</span>d(<span class="pl-s"><span class="pl-pds">"</span>Info:<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Va a enlazar<span class="pl-pds">"</span></span>); <span class="pl-c">//Debug</span>
+      <span class="pl-c">// Inicializar cliente</span>
+      client <span class="pl-k">=</span> <span class="pl-smi">JSONRPCClient</span><span class="pl-k">.</span>create(host, <span class="pl-smi">JSONRPCParams</span><span class="pl-k">.</span><span class="pl-smi">Versions</span><span class="pl-c1"><span class="pl-k">.</span>VERSION_2</span>);
+      <span class="pl-smi">Log</span><span class="pl-k">.</span>d(<span class="pl-s"><span class="pl-pds">"</span>Info:<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Enlazado<span class="pl-pds">"</span></span>); <span class="pl-c">//Debug</span>
+  }
+  <span class="pl-k">public</span> <span class="pl-k">double</span> <span class="pl-en">launch</span>(<span class="pl-k">double</span> <span class="pl-v">v1</span>, <span class="pl-k">double</span> <span class="pl-v">v2</span>, <span class="pl-k">int</span> <span class="pl-v">operation</span>){
+      <span class="pl-c">// Set the connection timeout</span>
+      <span class="pl-c">// setConnectionTimeout(int connectionTimeout)</span>
+      client<span class="pl-k">.</span>setConnectionTimeout(<span class="pl-c1">4000</span>);
+      client<span class="pl-k">.</span>setSoTimeout(<span class="pl-c1">4000</span>);
+      <span class="pl-k">double</span> result;
+      <span class="pl-c">// operation =&gt; SIEMPRE VA A SUMAR EN ESTE EJEMPLO</span>
+      <span class="pl-c">// Intentamos lanzar la petición</span>
+      <span class="pl-k">try</span> {
+          <span class="pl-c">// Petición de Doubleresult = client.callDouble("suma", v1, v2);</span>
+      } <span class="pl-k">catch</span> (<span class="pl-smi">JSONRPCException</span> e) {
+          e<span class="pl-k">.</span>printStackTrace();
+          result <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>;
+      }
+      <span class="pl-k">return</span> result;
+  }
+}</pre></div>
+
+<p>Así quedaría el proyecto:</p>
+
+<p><img src="http://i.imgur.com/BFXvT8b.png" alt="Imagen 1"> </p>
+
+<h1>
+<a id="4-referencias" class="anchor" href="#4-referencias" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4 Referencias</h1>
+
+<ol>
+<li><a href="http://ccia.ei.uvigo.es/docencia/SCS/1011/transparencias/Tema2-2.pdf">http://ccia.ei.uvigo.es/docencia/SCS/1011/transparencias/Tema2-2.pdf</a></li>
+<li><a href="https://books.google.es/books?id=K9hnCJ_NGq4C&amp;pg=PT500&amp;lpg=PT500&amp;dq=servicios+web+desde+android+arquitectura&amp;source=bl&amp;ots=KGDgREu7gJ&amp;sig=unwp9GmfFOnubFQbhiCN4Z2HOig&amp;hl=es&amp;sa=X&amp;ved=0ahUKEwiwuv2a2P7LAhVMXBoKHYHxCd0Q6AEIRDAG#v=onepage&amp;q=servicios%20web%20desde%20android%20arquitectura&amp;f=false">https://books.google.es/books?id=K9hnCJ_NGq4C&amp;pg=PT500&amp;lpg=PT500&amp;dq=servicios+web+desde+android+arquitectura&amp;source=bl&amp;ots=KGDgREu7gJ&amp;sig=unwp9GmfFOnubFQbhiCN4Z2HOig&amp;hl=es&amp;sa=X&amp;ved=0ahUKEwiwuv2a2P7LAhVMXBoKHYHxCd0Q6AEIRDAG#v=onepage&amp;q=servicios%20web%20desde%20android%20arquitectura&amp;f=false</a></li>
+<li><a href="http://www.w3c.es/Divulgacion/GuiasBreves/ServiciosWeb">http://www.w3c.es/Divulgacion/GuiasBreves/ServiciosWeb</a></li>
+<li>XML-RPC: <a href="http://xmlrpc.scripting.com/spec.html">http://xmlrpc.scripting.com/spec.html</a>
+</li>
+<li>aXML-RPC: <a href="https://github.com/timroes/aXMLRPC">https://github.com/timroes/aXMLRPC</a>
+</li>
+<li>Apache XML-RPC: <a href="http://ws.apache.org/xmlrpc/">http://ws.apache.org/xmlrpc/</a>
+</li>
+<li><a href="http://www.json.org/">http://www.json.org/</a></li>
+<li><a href="https://github.com/google/gson">https://github.com/google/gson</a></li>
+<li><a href="https://code.google.com/archive/p/android-xmlrpc/">https://code.google.com/archive/p/android-xmlrpc/</a></li>
+<li><a href="https://code.google.com/archive/p/android-json-rpc/">https://code.google.com/archive/p/android-json-rpc/</a></li>
+<li><a href="https://opensource.org/licenses/mit-license.php">https://opensource.org/licenses/mit-license.php</a></li>
+<li><a href="https://code.google.com/archive/p/android-json-rpc/wikis/GettingStarted.wiki">https://code.google.com/archive/p/android-json-rpc/wikis/GettingStarted.wiki</a></li>
+<li><a href="https://ws.apache.org/xmlrpc/client.html">https://ws.apache.org/xmlrpc/client.html</a></li>
+<li><a href="https://drive.google.com/file/d/0B_4Dc8dm9rLxVkgzR2JCVENGVkU/view?usp=sharing">https://drive.google.com/file/d/0B_4Dc8dm9rLxVkgzR2JCVENGVkU/view?usp=sharing</a></li>
+</ol>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Lifka/Android-RPC">Android-rpc</a> is maintained by <a href="https://github.com/Lifka">Lifka</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
