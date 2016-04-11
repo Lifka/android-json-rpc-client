@@ -1,8 +1,8 @@
 # RPC en Android (android-json-rpc)
 
 
-Gallardo Morales, Juan Carlos   
-Izquierdo Vera, Javier
+Gallardo Morales, Juan Carlos (jcgallardomorales@gmail.com)  
+Izquierdo Vera, Javier (javierizquierdovera@gmail.com)
 
 # Abstract 
 RPC permite conectar dispositivos, pudiendo realizar una conexión
@@ -279,11 +279,7 @@ Así quedaría el proyecto:
 
 # 4 Referencias
 1. http://ccia.ei.uvigo.es/docencia/SCS/1011/transparencias/Tema2-2.pdf
-2. https://books.google.es/books?id=K9hnCJ_NGq4C&pg=PT500&lpg=PT500&dq=servicio
-s+web+desde+android+arquitectura&source=bl&ots=KGDgREu7gJ&sig=unwp9Gmf-
-FOnubFQbhiCN4Z2HOig&hl=es&sa=X&ved=0ahUKEwiwuv2a2P7LAhVMXBoKH-
-YHxCd0Q6AEIRDAG#v=onepage&q=servicios%20web%20desde%20android%20arquit
-ectura&f=false
+2. https://books.google.es/books?id=K9hnCJ_NGq4C&pg=PT500&lpg=PT500&dq=servicios+web+desde+android+arquitectura&source=bl&ots=KGDgREu7gJ&sig=unwp9GmfFOnubFQbhiCN4Z2HOig&hl=es&sa=X&ved=0ahUKEwiwuv2a2P7LAhVMXBoKHYHxCd0Q6AEIRDAG#v=onepage&q=servicios%20web%20desde%20android%20arquitectura&f=false
 3. http://www.w3c.es/Divulgacion/GuiasBreves/ServiciosWeb
 4. XML-RPC: http://xmlrpc.scripting.com/spec.html
 5. aXML-RPC: https://github.com/timroes/aXMLRPC
