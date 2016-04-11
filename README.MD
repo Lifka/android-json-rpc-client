@@ -1,6 +1,6 @@
 # RPC en Android (android-json-rpc)
 
---> http://lifka.github.io/Android-RPC/ <--
+--> http://lifka.github.io/Android-JSON-RPC-Client/ <--
 
 
 Gallardo Morales, Juan Carlos (jcgallardomorales@gmail.com)  
