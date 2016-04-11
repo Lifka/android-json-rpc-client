@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">RPC-ANDROID</string>
+    <string name="intro">Test app</string>
+    <string name="info">Introduce two numbers:</string>
+    <string name="startserver">Start server</string>
+    <string name="startclient">Start client</string>
+    <string name="igual">=</string>
+    <string name="mas">+</string>
+    <string name="sumar">Sum</string>
+    <string name="result">result</string>
+    <string name="make">Request</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/RPC-ANDROID.iml" filepath="$PROJECT_DIR$/RPC-ANDROID.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org-apache-xmlrpc/org-apache-xmlrpc.iml" filepath="$PROJECT_DIR$/org-apache-xmlrpc/org-apache-xmlrpc.iml" />
+    </modules>
+  </component>
+</project>
