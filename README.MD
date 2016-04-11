@@ -245,30 +245,31 @@ import RPC.JSONRPCClient;
 import RPC.JSONRPCException;
 import RPC.JSONRPCParams;
 public class Client {
-private JSONRPCClient client;
-private String host;
-Client(String host){
-Log.d("Info:", "Va a enlazar"); //Debug
-// Inicializar cliente
-client = JSONRPCClient.create(host, JSONRPCParams.Versions.VERSION_2);
-    Log.d("Info:", "Enlazado"); //Debug
-}
-public double launch(double v1, double v2, int operation){
-    // Set the connection timeout
-    // setConnectionTimeout(int connectionTimeout)
-    client.setConnectionTimeout(4000);
-    client.setSoTimeout(4000);
-    double result;
-    // operation => SIEMPRE VA A SUMAR EN ESTE EJEMPLO
-    // Intentamos lanzar la petición
-    try {
-        // Petición de Doubleresult = client.callDouble("suma", v1, v2);
-    } catch (JSONRPCException e) {
-        e.printStackTrace();
-        result = -1;
-    }
-    return result;
-    }
+  private JSONRPCClient client;
+  private String host;
+
+  Client(String host){
+      Log.d("Info:", "Va a enlazar"); //Debug
+      // Inicializar cliente
+      client = JSONRPCClient.create(host, JSONRPCParams.Versions.VERSION_2);
+      Log.d("Info:", "Enlazado"); //Debug
+  }
+  public double launch(double v1, double v2, int operation){
+      // Set the connection timeout
+      // setConnectionTimeout(int connectionTimeout)
+      client.setConnectionTimeout(4000);
+      client.setSoTimeout(4000);
+      double result;
+      // operation => SIEMPRE VA A SUMAR EN ESTE EJEMPLO
+      // Intentamos lanzar la petición
+      try {
+          // Petición de Doubleresult = client.callDouble("suma", v1, v2);
+      } catch (JSONRPCException e) {
+          e.printStackTrace();
+          result = -1;
+      }
+      return result;
+  }
 }
 ```
 
